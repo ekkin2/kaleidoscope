@@ -4,6 +4,9 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:kaleidoscope/services/models/news_model.dart';
 import 'package:kaleidoscope/widgets/news_card.dart';
 
+import 'package:kaleidoscope/services/network.dart';
+import 'package:kaleidoscope/services/models/news_model.dart';
+
 class FeedPage extends StatefulWidget {
   FeedPage({Key key, this.title}) : super(key: key);
   final String title;
@@ -14,7 +17,15 @@ class FeedPage extends StatefulWidget {
 
 class _FeedPageState extends State<FeedPage> {
 
+  Future<List<News>> futureFeed;
   String _sortDropdownValue = "Recent";
+  String _topicDropdownValue = "All";
+
+  @override
+  void initState() {
+    super.initState();
+    futureFeed = fetchRecentNews();
+  }
 
   Widget _dropdown(List<String> items, List onTaps) {
     return Container(
@@ -62,6 +73,30 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
+  Widget _futureFeed() {
+    return FutureBuilder<List<News>>(
+      future: futureFeed,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, index) {
+              return NewsCard(
+                // todo: input news into here
+              );
+            }
+          );
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+
+        // By default, show a loading spinner.
+        return CircularProgressIndicator();
+      },
+    );
+  }
+
+  // This widget is the list view of news cards
   Widget _feedListView() {
     return ListView(
       children: [
