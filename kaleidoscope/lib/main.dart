@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:kaleidoscope/pages/article.dart';
 import 'package:kaleidoscope/pages/feed.dart';
 import 'package:kaleidoscope/pages/recommend.dart';
 
@@ -21,6 +22,8 @@ class MyAppState extends State<MyApp> {
 
   FeedPage _feedPage;
   RecommendPage _recommendPage;
+  ArticlePage _articlePage;
+
   List<Widget> _children;
 
   final navigatorKey = GlobalKey<NavigatorState>();
@@ -29,10 +32,12 @@ class MyAppState extends State<MyApp> {
 
     this._feedPage = new FeedPage(title: "Feed Page",);
     this._recommendPage = new RecommendPage(title: "Recommend Page");
+    this._articlePage = new ArticlePage(title: "Article page");
 
     this._children = [
       this._feedPage,
       this._recommendPage,
+      this._articlePage,
     ];
   }
 
@@ -63,7 +68,7 @@ class MyAppState extends State<MyApp> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.language), label: 'Feed'),
             BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'For You'),
-//            BottomNavigationBarItem(icon: Icon(Icons.show_chart), label: 'Insights'),
+           BottomNavigationBarItem(icon: Icon(Icons.show_chart), label: 'Article'),
           ],
           currentIndex: _selectedIndex,
           fixedColor: Colors.lightBlue,

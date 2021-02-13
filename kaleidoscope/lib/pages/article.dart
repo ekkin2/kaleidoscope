@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 /*
  * This page will be used to view the article using a Flutter
@@ -14,23 +17,23 @@ class ArticlePage extends StatefulWidget {
 
 class _ArticlePageState extends State<ArticlePage> {
 
-  Widget _feedListView() {
-    return ListView(
-      children: [
-        Card(
-          child: Text("hello world"),
-        ),
-      ],
+  String _tempUrl = 'https://www.google.com';
+
+  @override
+  void initState() {
+    super.initState();
+    // Enable hybrid composition.
+    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+  }
+
+  Widget _articleWeb(url) {
+    return WebView(
+      initialUrl: url,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        // todo: add webview
-        child: _feedListView(),
-      ),
-    );
+    return _articleWeb(_tempUrl);
   }
 }
