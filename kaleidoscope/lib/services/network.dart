@@ -30,5 +30,49 @@ Future<List<News>> fetchRecentNews() async {
     // then throw an exception.
     throw Exception('Failed to load feed');
   }
+}
 
+Future<List<News>> fetchPersonalNews() async {
+  // todo: add specific thing here for sending polarity average
+  final response = await http.get('http://172.17.108.145:8000/articles.json');
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    return parseNews(response.body);
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load feed');
+  }
+}
+
+Future<List<News>> fetchTopicNews(String topic) async {
+  // todo: add specific thing here for sending specific topic
+  final response = await http.get('http://172.17.108.145:8000/articles.json');
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    return parseNews(response.body);
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load feed');
+  }
+}
+
+Future<List<News>> fetchObjectiveNews() async {
+  // todo: add specific thing here for sending that we want objective
+  final response = await http.get('http://172.17.108.145:8000/articles.json');
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    return parseNews(response.body);
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load feed');
+  }
 }
