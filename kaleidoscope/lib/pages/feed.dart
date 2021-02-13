@@ -73,27 +73,36 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
-  Widget _futureFeed() {
-    return FutureBuilder<List<News>>(
-      future: futureFeed,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (context, index) {
-              return NewsCard(
-                // todo: input news into here
-                news: snapshot.data[index],
-              );
-            }
-          );
-        } else if (snapshot.hasError) {
-          return Text("${snapshot.error}");
-        }
+  Future _onRefresh() async {
+    setState(() {
+      futureFeed = fetchRecentNews();
+    });
+  }
 
-        // By default, show a loading spinner.
-        return CircularProgressIndicator();
-      },
+  Widget _futureFeed() {
+    return RefreshIndicator(
+      onRefresh: _onRefresh,
+      child: FutureBuilder<List<News>>(
+        future: futureFeed,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  return NewsCard(
+                    // todo: input news into here
+                    news: snapshot.data[index],
+                  );
+                }
+            );
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+
+          // By default, show a loading spinner.
+          return CircularProgressIndicator();
+        },
+      ),
     );
   }
 
