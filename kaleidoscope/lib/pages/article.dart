@@ -27,12 +27,20 @@ class _ArticlePageState extends State<ArticlePage> {
   Widget _buildAppBar() {
     return new AppBar(
       // title: Text("Web Page"),
+      centerTitle: true,
       leading: IconTheme(
         data: IconThemeData(color: Colors.white),
         child: BackButton(),
       ),
       actions: <Widget>[
       ],
+      title: Container(
+        margin: EdgeInsets.all(8),
+        child: SizedBox(
+          height: 42,
+          child: Image(image: AssetImage('assets/images/kaleidoscope_logo.png')),
+        ),
+      ),
     );
   }
 

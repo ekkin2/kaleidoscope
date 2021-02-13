@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:kaleidoscope/services/models/news_model.dart';
 
-String apiLoc = "http://192.168.86.51:8000";
+String apiLoc = "http://172.17.108.145:8000";
 
 // This function parses one news article
 List<News> parseNews(String responseBody) {

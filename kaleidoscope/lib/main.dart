@@ -58,6 +58,12 @@ class MyAppState extends State<MyApp> {
       ),
       home: Scaffold(
         appBar: AppBar(
+          leading: Container(
+            margin: EdgeInsets.all(8),
+            child: SizedBox(
+              child: Image(image: AssetImage('assets/images/kaleidoscope_logo.png')),
+            ),
+          ),
           iconTheme: IconThemeData(
             color: Colors.white,
           ),
