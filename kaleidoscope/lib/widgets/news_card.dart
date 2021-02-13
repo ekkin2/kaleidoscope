@@ -57,7 +57,33 @@ class _NewsCardState extends State<NewsCard> {
     );
   }
 
-  Widget _metricColumn() {
+  Widget _objectivityMeter(percent) {
+    return Container(
+      height: 70,
+      child: SfRadialGauge(
+        axes: <RadialAxis>[RadialAxis(
+          showLabels: false,
+          showTicks: false,
+          // pointers: [NeedlePointer(value: 90, needleStartWidth: 1, needleEndWidth: 3)],
+          annotations: <GaugeAnnotation>[
+            GaugeAnnotation(axisValue: 50, positionFactor: 0.2,
+                widget: Text((percent*100).round().toString(), style:
+                TextStyle(fontWeight: FontWeight.w300, fontSize: 20),))],
+          ranges: <GaugeRange>[GaugeRange(startValue: 0, endValue: percent*100, color: Colors.green,
+          )],
+          // axisLineStyle: AxisLineStyle(
+          //   gradient: SweepGradient(
+          //     colors: [Colors.blue, Colors.red],
+          //     stops: [0.25, 0.75],
+          //   ),
+          // ),
+        )
+        ],
+      ),
+    );
+  }
+
+  Widget _metricColumn(percent) {
     return Expanded(
       flex: 1,
       child: Container(
@@ -65,8 +91,7 @@ class _NewsCardState extends State<NewsCard> {
         child: Column(
           children: [
             _polarityMeter(),
-             //todo: polarity meter
-            CircularPercentIndicator(radius: 64, percent: .50, ), //todo: objectivity meter
+            _objectivityMeter(.65),
           ],
         ),
       ),
@@ -132,7 +157,7 @@ class _NewsCardState extends State<NewsCard> {
           Row(
             children: [
               _thumbnail(_tempImgLink),
-              _metricColumn(),
+              _metricColumn(0.5),
             ],
           ),
           // todo: add source img here
