@@ -20,7 +20,7 @@ class NewsCard extends StatefulWidget {
 
 class _NewsCardState extends State<NewsCard> {
 
-  String _bullet = "\u2023 ";
+  String _bullet = "\u2022";
   String _tempImgLink = "https://media.discordapp.net/attachments/809916337551966259/810003668057194496/12oszyW4ja3z9-VLfTjBwFA.png?width=705&height=397";
   String _tempSourceLink = "https://cdn.discordapp.com/attachments/809916337551966259/810005502502371348/CNN-Logo.png";
   List<String> _tempFactsList = ["fact 1 sdfskdfjlskdfjlskdfjlskdfjlskdfjlskdjfls lsdlskdflskd fkd fdk fkdf dk fkd fkd fkdfs kdf s", "fact 2", "fact 3"];
@@ -179,13 +179,21 @@ class _NewsCardState extends State<NewsCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          for (var i in factsList) Text(
-            _bullet + i,
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 16
-            ),
-          )
+          for (var i in factsList) Row(
+            children: [
+              Text(
+                  _bullet + ' ',
+                style: TextStyle(fontSize: 12, fontFamily: 'Roboto'),
+              ),
+              Text(
+                i,
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 16
+                ),
+              )
+            ],
+          ),
         ],
       ),
     );
