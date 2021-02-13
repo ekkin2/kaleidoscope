@@ -1,3 +1,4 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -19,8 +20,10 @@ class NewsCard extends StatefulWidget {
 
 class _NewsCardState extends State<NewsCard> {
 
+  String _bullet = "\u2023 ";
   String _tempImgLink = "https://media.discordapp.net/attachments/809916337551966259/810003668057194496/12oszyW4ja3z9-VLfTjBwFA.png?width=705&height=397";
   String _tempSourceLink = "https://cdn.discordapp.com/attachments/809916337551966259/810005502502371348/CNN-Logo.png";
+  List<String> _tempFactsList = ["fact 1 sdfskdfjlskdfjlskdfjlskdfjlskdfjlskdjfls lsdlskdflskd fkd fdk fkdf dk fkd fkd fkdfs kdf s", "fact 2", "fact 3"];
 
   Widget _thumbnail(String imageLink) {
     return Expanded(
@@ -145,48 +148,80 @@ class _NewsCardState extends State<NewsCard> {
   Widget _factsButton() {
     return Container(
         margin: EdgeInsets.only(right: 8),
-        child: IconButton(
-          icon: Icon(Icons.list),
-          onPressed: () => {},
+        child: ExpandableButton(
+          child: Icon(Icons.list),
         ),
       );
   }
 
-  Widget _layout() {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-      ),
-      elevation: 3,
+  Widget _bottomRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _title(),
+              _timestamp(),
+            ],
+          ),
+        ),
+        _factsButton(),
+      ],
+    );
+  }
+
+  Widget _factsList() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              _thumbnail(_tempImgLink),
-              _metricColumn(0.5),
-            ],
-          ),
-          // todo: add source img here
-          _source(),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _title(),
-                    _timestamp(),
-                  ],
-                ),
-              ),
-              _factsButton(),
-            ],
+          for (var i in _tempFactsList) Text(
+            _bullet + i,
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontSize: 16
+            ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget _layout() {
+    return ExpandableNotifier(
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+        ),
+        elevation: 3,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                _thumbnail(_tempImgLink),
+                _metricColumn(0.5),
+              ],
+            ),
+            // todo: add source img here
+            _source(),
+
+            Expandable(
+              collapsed: _bottomRow(),
+              expanded: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _bottomRow(),
+                  _factsList(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

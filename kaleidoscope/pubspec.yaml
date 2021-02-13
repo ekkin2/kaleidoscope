@@ -31,6 +31,7 @@ dependencies:
   percent_indicator: ^2.1.9+1
   syncfusion_flutter_gauges: ^18.4.42
   webview_flutter: ^1.0.7
+  expandable: ^4.1.4
 
 dev_dependencies:
   flutter_test:
