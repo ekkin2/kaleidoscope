@@ -28,15 +28,18 @@ class _NewsCardState extends State<NewsCard> {
   Widget _thumbnail(String imageLink) {
     return Expanded(
       flex: 3,
-      child: Container(
-        margin: EdgeInsets.all(8),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: Image.network(
-            imageLink,
-            fit: BoxFit.cover,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height / 4.5,
+        child: Container(
+          margin: EdgeInsets.all(8),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8.0),
+            child: Image.network(
+              imageLink,
+              fit: BoxFit.cover,
+            ),
           ),
-        ), 
+        ),
       ),
     );
   }
