@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+
 class News {
   String id;
   String title;
@@ -25,23 +27,33 @@ class News {
     this.timestamp,
   });
 
-  factory News.fromMap(Map<String, dynamic> data, String id) {
+  factory News.fromJson(Map<String, dynamic> data) {
     if (data == null) return null;
 
     final title = data["title"] as String;
     final source = data["description"] as String;
     final link = data["link"] as String;
+    final imageLink = data["imageLink"] as String;
+    final polarity = data["polarity"] as int;
+    final objectivity = data["objectivity"] as int;
+    final sentences = data["sentences"] as List;
+    final facts = data["facts"] as List;
     final timestamp = data["timestamp"].toDate();
 
     return News(
-      id: id,
       title: title,
       source: source,
-
+      link: link,
+      imageLink: imageLink,
+      polarity: polarity,
+      objectivity: objectivity,
+      sentences: sentences,
+      facts: facts,
+      timestamp: timestamp,
     );
   }
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toJson() => {
 
   };
 

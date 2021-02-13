@@ -32,6 +32,7 @@ dependencies:
   syncfusion_flutter_gauges: ^18.4.42
   webview_flutter: ^1.0.7
   expandable: ^4.1.4
+  http: ^0.12.2
 
 dev_dependencies:
   flutter_test:
