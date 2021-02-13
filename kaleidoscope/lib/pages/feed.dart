@@ -110,7 +110,7 @@ class _FeedPageState extends State<FeedPage> {
     return Column(
       children: [
         Expanded(flex: 1, child: _filter()),
-        Expanded(flex: 9, child: _feedListView()),
+        Expanded(flex: 9, child: _futureFeed()),
       ],
     );
   }

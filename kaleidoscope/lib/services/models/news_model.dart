@@ -10,9 +10,9 @@ class News {
   String imageLink;
   int polarity;
   int objectivity;
-  List<String> sentences;
-  List<String> facts;
-  DateTime timestamp;
+  List sentences;
+  List facts;
+  String timestamp; // todo: change back to DateTime
 
   News({
     this.id,
@@ -38,7 +38,7 @@ class News {
     final objectivity = data["objectivity"] as int;
     final sentences = data["sentences"] as List;
     final facts = data["facts"] as List;
-    final timestamp = data["timestamp"].toDate();
+    final timestamp = data["timestamp"] as String;
 
     return News(
       title: title,
