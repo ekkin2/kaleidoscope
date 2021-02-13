@@ -242,6 +242,8 @@ class _NewsCardState extends State<NewsCard> {
   // on taps
   _onTap(context){
     // todo: change url to widget.news.url
+    // todo: whenever tapped, add polarity of news source to global moving avg.
+    // todo: global avg. can be a global var
     Navigator.of(context).push(new ArticlePageRoute(_tempUrl));
   }
 }
