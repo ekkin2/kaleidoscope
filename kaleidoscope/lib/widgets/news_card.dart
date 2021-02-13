@@ -90,8 +90,14 @@ class _NewsCardState extends State<NewsCard> {
         margin: EdgeInsets.all(8),
         child: Column(
           children: [
-            _polarityMeter(),
-            _objectivityMeter(.65),
+            Tooltip(
+              message: 'Polarity',
+              child: _polarityMeter(),
+            ),
+            Tooltip(
+              message: 'Objectivity',
+              child: _objectivityMeter(.65),
+            ),
           ],
         ),
       ),
