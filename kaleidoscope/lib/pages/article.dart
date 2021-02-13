@@ -46,7 +46,7 @@ class _ArticlePageState extends State<ArticlePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: _articleWeb('https://www.flutter.dev'),
+      body: _articleWeb(widget.url),
 
     );
   }
