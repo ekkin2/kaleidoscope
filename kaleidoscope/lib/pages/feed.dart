@@ -83,6 +83,7 @@ class _FeedPageState extends State<FeedPage> {
             itemBuilder: (context, index) {
               return NewsCard(
                 // todo: input news into here
+                news: snapshot.data[index],
               );
             }
           );

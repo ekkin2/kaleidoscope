@@ -12,7 +12,7 @@ import 'package:kaleidoscope/services/models/news_model.dart';
 
 // This function parses one news article
 List<News> parseNews(String responseBody) {
-  print(responseBody);
+  // print(responseBody);
   final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
   return parsed.map<News>((json) => News.fromJson(json)).toList();
 }

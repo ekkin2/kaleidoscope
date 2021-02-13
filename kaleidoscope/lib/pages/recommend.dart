@@ -68,9 +68,9 @@ class _RecommendPageState extends State<RecommendPage> {
   Widget _feedListView() {
     return ListView(
       children: [
-        NewsCard(),
-        NewsCard(),
-        NewsCard(),
+        // NewsCard(),
+        // NewsCard(),
+        // NewsCard(),
       ],
     );
   }
