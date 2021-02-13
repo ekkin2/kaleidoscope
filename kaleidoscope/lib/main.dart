@@ -53,7 +53,7 @@ class MyAppState extends State<MyApp> {
       title: 'Kaleidoscope',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-
+        fontFamily: 'Jost',
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Scaffold(
