@@ -1,0 +1,37 @@
+{
+    "articles": [
+        {
+            "title": "Article 1",
+            "source": "cnn",
+            "link": "https://www.cnn.com/2021/02/13/asia/japan-earthquake-intl/index.html",
+            "imageLink": "https://cdn.cnn.com/cnnnext/dam/assets/210213105748-02-japan-earthquake-0213-exlarge-169.jpg",
+            "polarity": 20,
+            "obj": 70,
+            "sentences": ["sentence 1.", "sentence 2", "sentence 3"],
+            "facts": ["fact 1", "fact 2", "fact 3"],
+            "timestamp": "2021-02-13"
+        },
+        {
+            "title": "Article 2",
+            "source": "fox",
+            "link": "https://www.foxnews.com/politics/live-updates-trumps-impeachment-2-13-21",
+            "imageLink": "https://a57.foxnews.com/hp.foxnews.com/images/2021/02/1280/533/d7284af37e6dde467b4a3bb39197a6bc.jpg?tl=1&ve=1",
+            "polarity": 80,
+            "obj": 60,
+            "sentences": ["sentence 1.", "sentence 2", "sentence 3"],
+            "facts": ["fact 1", "fact 2", "fact 3"],
+            "timestamp": "2021-02-13"
+        },
+        {
+            "title": "Article 3",
+            "source": "npr",
+            "link": "https://www.npr.org/2021/02/12/966940217/anger-and-fear-as-asian-american-seniors-targeted-in-bay-area-attacks",
+            "imageLink": "https://media.npr.org/assets/img/2021/02/12/ap_21042774752241-5b5b3666f48c1aafbce4841b131f6cf3d765532d-s800-c85.jpg",
+            "polarity": 50,
+            "obj": 90,
+            "sentences": ["sentence 1.", "sentence 2", "sentence 3"],
+            "facts": ["fact 1", "fact 2", "fact 3"],
+            "timestamp": "2021-02-13"
+        }
+    ]
+}
