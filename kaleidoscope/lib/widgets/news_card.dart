@@ -25,6 +25,13 @@ class _NewsCardState extends State<NewsCard> {
   String _tempSourceLink = "https://cdn.discordapp.com/attachments/809916337551966259/810005502502371348/CNN-Logo.png";
   List<String> _tempFactsList = ["fact 1 sdfskdfjlskdfjlskdfjlskdfjlskdfjlskdjfls lsdlskdflskd fkd fdk fkdf dk fkd fkd fkdfs kdf s", "fact 2", "fact 3"];
 
+  int _objectivity;
+
+  @override
+  void initState() {
+    _objectivity = (widget.news.objectivity / 20).ceil();
+  }
+
   Widget _thumbnail(String imageLink) {
     return Expanded(
       flex: 3,
@@ -101,10 +108,10 @@ class _NewsCardState extends State<NewsCard> {
               message: 'Polarity',
               child: _polarityMeter(widget.news.polarity.toDouble()),
             ),
-            Tooltip(
-              message: 'Objectivity',
-              child: _objectivityMeter(widget.news.objectivity.toDouble() / 100),
-            ),
+            // Tooltip(
+            //   message: 'Objectivity',
+            //   child: _objectivityMeter(widget.news.objectivity.toDouble() / 100),
+            // ),
           ],
         ),
       ),
@@ -116,7 +123,7 @@ class _NewsCardState extends State<NewsCard> {
       margin: EdgeInsets.only(left: 12, bottom: 4, top: 8),
       child: Image.network(
         sourceLink,
-        height: 16,
+        height: 20,
         fit: BoxFit.cover,
       ),
     );
@@ -218,8 +225,25 @@ class _NewsCardState extends State<NewsCard> {
                 _metricColumn(0.5),
               ],
             ),
-            // todo: add source img here
-            _source(_tempSourceLink),
+
+            IntrinsicHeight(
+              child: Row(
+                children: [
+                  _source(_tempSourceLink),
+                  // Padding(padding: EdgeInsets.all(12),),
+                  VerticalDivider(width: 36, thickness: 2, indent: 6, endIndent: 2, ),
+                  Tooltip( // Objectivity Ranking
+                    message: "Objectivity",
+                    child: Row(
+                      children: [
+                        for (int i = 0; i < _objectivity; i++) Icon(Icons.star, color: Colors.amber, ),
+                        for (int i = 0; i < 5 - _objectivity; i++) Icon(Icons.star_border),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
 
             Expandable(
               collapsed: _bottomRow(),
