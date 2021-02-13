@@ -22,7 +22,7 @@ class MyAppState extends State<MyApp> {
 
   FeedPage _feedPage;
   RecommendPage _recommendPage;
-  ArticlePage _articlePage;
+  // ArticlePage _articlePage;
 
   List<Widget> _children;
 
@@ -32,12 +32,12 @@ class MyAppState extends State<MyApp> {
 
     this._feedPage = new FeedPage(title: "Feed Page",);
     this._recommendPage = new RecommendPage(title: "Recommend Page");
-    this._articlePage = new ArticlePage(title: "Article page");
+    // this._articlePage = new ArticlePage(url: "https://www.flutter.dev");
 
     this._children = [
       this._feedPage,
       this._recommendPage,
-      this._articlePage,
+      // this._articlePage,
     ];
   }
 
@@ -68,7 +68,7 @@ class MyAppState extends State<MyApp> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.language), label: 'Feed'),
             BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'For You'),
-           BottomNavigationBarItem(icon: Icon(Icons.show_chart), label: 'Article'),
+           // BottomNavigationBarItem(icon: Icon(Icons.show_chart), label: 'Article'),
           ],
           currentIndex: _selectedIndex,
           fixedColor: Colors.lightBlue,

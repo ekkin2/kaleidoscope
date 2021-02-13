@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
+import 'package:kaleidoscope/pages/article.dart';
 import 'package:kaleidoscope/services/models/news_model.dart';
 
 class NewsCard extends StatefulWidget {
@@ -192,9 +193,31 @@ class _NewsCardState extends State<NewsCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(8),
-      child: _layout(),
+    return InkWell(
+      onTap: () => _onTap(context),
+
+      child: Container(
+        margin: EdgeInsets.all(8),
+        child: _layout(),
+      ),
     );
   }
+
+  String _tempUrl = "https://www.npr.org/sections/trump-impeachment-trial-live-updates/2021/02/12/967425820/trump-defense-tries-to-switch-blame-saying-democrats-didnt-condemn-looting";
+  // on taps
+  _onTap(context){
+    // todo: change url to widget.news.url
+    Navigator.of(context).push(new ArticlePageRoute(_tempUrl));
+  }
+}
+
+class ArticlePageRoute extends MaterialPageRoute {
+  ArticlePageRoute(String url)
+      : super(
+    builder:
+        (BuildContext context) => new ArticlePage(
+        url: url,
+    ),
+    fullscreenDialog: true,
+  );
 }

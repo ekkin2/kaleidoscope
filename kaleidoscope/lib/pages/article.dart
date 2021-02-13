@@ -8,8 +8,8 @@ import 'package:webview_flutter/webview_flutter.dart';
  * WebView.
  */
 class ArticlePage extends StatefulWidget {
-  ArticlePage({Key key, this.title}) : super(key: key);
-  final String title;
+  ArticlePage({Key key, this.url}) : super(key: key);
+  final String url;
 
   @override
   _ArticlePageState createState() => _ArticlePageState();
@@ -17,13 +17,23 @@ class ArticlePage extends StatefulWidget {
 
 class _ArticlePageState extends State<ArticlePage> {
 
-  String _tempUrl = 'https://www.google.com';
-
   @override
   void initState() {
     super.initState();
     // Enable hybrid composition.
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+  }
+
+  Widget _buildAppBar() {
+    return new AppBar(
+      // title: Text("Web Page"),
+      leading: IconTheme(
+        data: IconThemeData(color: Colors.white),
+        child: BackButton(),
+      ),
+      actions: <Widget>[
+      ],
+    );
   }
 
   Widget _articleWeb(url) {
@@ -34,6 +44,10 @@ class _ArticlePageState extends State<ArticlePage> {
 
   @override
   Widget build(BuildContext context) {
-    return _articleWeb(_tempUrl);
+    return Scaffold(
+      appBar: _buildAppBar(),
+      body: _articleWeb('https://www.flutter.dev'),
+
+    );
   }
 }
