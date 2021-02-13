@@ -24,7 +24,7 @@ class _FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
-    futureFeed = fetchRecentNews();
+    futureFeed = fetchNews(_sortDropdownValue, _topicDropdownValue);
   }
 
   Widget _dropdown(List<String> items, List onTaps) {
@@ -75,7 +75,7 @@ class _FeedPageState extends State<FeedPage> {
 
   Future _onRefresh() async {
     setState(() {
-      futureFeed = fetchRecentNews();
+      futureFeed = fetchNews(_sortDropdownValue, _topicDropdownValue);
     });
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kaleidoscope/services/network.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
@@ -14,6 +15,13 @@ class RecommendPage extends StatefulWidget {
 }
 
 class _RecommendPageState extends State<RecommendPage> {
+  Future<List<News>> futureFeed;
+
+  @override
+  void initState() {
+    super.initState();
+    futureFeed = fetchPersonalNews();
+  }
 
   Widget _polarityMeter() {
     return Container(
@@ -65,6 +73,39 @@ class _RecommendPageState extends State<RecommendPage> {
     );
   }
 
+  Future _onRefresh() async {
+    setState(() {
+      futureFeed = fetchPersonalNews();
+    });
+  }
+
+  Widget _futureFeed() {
+    return RefreshIndicator(
+      onRefresh: _onRefresh,
+      child: FutureBuilder<List<News>>(
+        future: futureFeed,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  return NewsCard(
+                    // todo: input news into here
+                    news: snapshot.data[index],
+                  );
+                }
+            );
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+
+          // By default, show a loading spinner.
+          return CircularProgressIndicator();
+        },
+      ),
+    );
+  }
+
   Widget _feedListView() {
     return ListView(
       children: [
@@ -79,7 +120,7 @@ class _RecommendPageState extends State<RecommendPage> {
     return Column(
       children: [
         Expanded(flex: 1, child: _notification()),
-        Expanded(flex: 9, child:_feedListView()),
+        Expanded(flex: 9, child: _futureFeed()),
       ],
     );
   }
