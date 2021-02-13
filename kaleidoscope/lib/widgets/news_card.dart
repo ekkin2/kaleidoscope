@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import 'package:kaleidoscope/services/models/news_model.dart';
 
@@ -36,6 +37,26 @@ class _NewsCardState extends State<NewsCard> {
     );
   }
 
+  Widget _polarityMeter() {
+    return Container(
+      height: 70,
+      child: SfRadialGauge(
+        axes: <RadialAxis>[RadialAxis(
+            showLabels: false,
+          showTicks: false,
+          pointers: [NeedlePointer(value: 90, needleStartWidth: 1, needleEndWidth: 3)],
+          axisLineStyle: AxisLineStyle(
+            gradient: SweepGradient(
+                colors: [Colors.blue, Colors.red],
+              stops: [0.25, 0.75],
+            ),
+          ),
+        )
+        ],
+      ),
+    );
+  }
+
   Widget _metricColumn() {
     return Expanded(
       flex: 1,
@@ -43,8 +64,9 @@ class _NewsCardState extends State<NewsCard> {
         margin: EdgeInsets.all(8),
         child: Column(
           children: [
-            CircularPercentIndicator(radius: 64), //todo: polarity meter
-            CircularPercentIndicator(radius: 64), //todo: objectivity meter
+            _polarityMeter(),
+             //todo: polarity meter
+            CircularPercentIndicator(radius: 64, percent: .50, ), //todo: objectivity meter
           ],
         ),
       ),

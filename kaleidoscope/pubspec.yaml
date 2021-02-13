@@ -29,6 +29,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
   percent_indicator: ^1.0.16
+  syncfusion_flutter_gauges: ^18.4.42
 
 dev_dependencies:
   flutter_test:
