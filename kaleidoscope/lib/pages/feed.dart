@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/percent_indicator.dart';
+
+import 'package:kaleidoscope/services/models/news_model.dart';
+import 'package:kaleidoscope/widgets/news_card.dart';
 
 class FeedPage extends StatefulWidget {
   FeedPage({Key key, this.title}) : super(key: key);
@@ -13,9 +17,8 @@ class _FeedPageState extends State<FeedPage> {
   Widget _feedListView() {
     return ListView(
       children: [
-        Card(
-          child: Text("hello world"),
-        ),
+        NewsCard(),
+        NewsCard(),
       ],
     );
   }
