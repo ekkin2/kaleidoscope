@@ -1,5 +1,6 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, render_template, current_app
 import json
+import os
 from newsapi import NewsApiClient
 
 app = Flask(__name__)
@@ -29,24 +30,21 @@ def get_recent():
     else:
         sort = "recent"
 
-    with open('db.json') as f:
+    with open(os.path.join(current_app.static_folder, 'db.json'), encoding='utf-8') as f:
         data = json.load(f)
 
     category_data = data[category]
 
-    if sort == "recent":
-        return category_data
-
     if sort == "objective":
-        return sorted(category_data["articles"], key=lambda article : article['objectivity'], reverse=True)
+        category_data["articles"] = sorted(category_data["articles"], key=lambda article : article['objectivity'], reverse=True)
 
     if sort == "polarity":
         user_polarity = request.args['score']
         target_polarity = 100 - user_polarity
 
-        return sorted(category_data["articles"], key=lambda article : abs(target_polarity - article['polarity']))
+        category_data["articles"] = sorted(category_data["articles"], key=lambda article : abs(target_polarity - article['polarity']))
 
-    return "not success"
+    return category_data
 
 
 
@@ -71,7 +69,7 @@ def refresh_db():
             article['objectivity'] = objectivity
             article['polarity'] = polarity
 
-    with open('db.json', 'w', encoding='utf-8') as f:
+    with open('static/db.json', 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
     return "success"
