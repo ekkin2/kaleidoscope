@@ -7,6 +7,7 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:kaleidoscope/pages/article.dart';
 import 'package:kaleidoscope/services/models/news_model.dart';
 import 'package:kaleidoscope/util/gradient.dart';
+import 'package:kaleidoscope/util/colors.dart';
 
 class NewsCard extends StatefulWidget {
   NewsCard({Key key, this.news}) : super(key: key);
@@ -59,67 +60,21 @@ class _NewsCardState extends State<NewsCard> {
   }
 
   Widget _polarityMeter(double value) {
-    return Container(
-      height: 70,
-      child: SfRadialGauge(
-        axes: <RadialAxis>[RadialAxis(
-            showLabels: false,
-          showTicks: false,
-          pointers: [NeedlePointer(value: value, needleStartWidth: 1, needleEndWidth: 3)],
-          axisLineStyle: AxisLineStyle(
-            gradient: SweepGradient(
-                colors: [Colors.blue, Colors.red],
-              stops: [0.25, 0.75],
+    return Tooltip(
+      message: "Polarity",
+      child: AbsorbPointer(
+        child: SliderTheme(
+            data: SliderThemeData(
+              thumbColor: colfunc(value, 0, 100, Colors.blue, Colors.red),
+              // disabledThumbColor: ,
+              trackShape: GradientRectSliderTrackShape(gradient: gradient, darkenInactive: false),
             ),
-          ),
-        )
-        ],
-      ),
-    );
-  }
-
-  Widget _objectivityMeter(percent) {
-    return Container(
-      height: 70,
-      child: SfRadialGauge(
-        axes: <RadialAxis>[RadialAxis(
-          showLabels: false,
-          showTicks: false,
-          // pointers: [NeedlePointer(value: 90, needleStartWidth: 1, needleEndWidth: 3)],
-          annotations: <GaugeAnnotation>[
-            GaugeAnnotation(axisValue: 50, positionFactor: 0.2,
-                widget: Text((percent*100).round().toString(), style:
-                TextStyle(fontWeight: FontWeight.w300, fontSize: 20),))],
-          ranges: <GaugeRange>[GaugeRange(startValue: 0, endValue: percent*100, color: Colors.green,
-          )],
-          // axisLineStyle: AxisLineStyle(
-          //   gradient: SweepGradient(
-          //     colors: [Colors.blue, Colors.red],
-          //     stops: [0.25, 0.75],
-          //   ),
-          // ),
-        )
-        ],
-      ),
-    );
-  }
-
-  Widget _metricColumn(percent) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        margin: EdgeInsets.all(8),
-        child: Column(
-          children: [
-            Tooltip(
-              message: 'Polarity',
-              child: _polarityMeter(widget.news.polarity.toDouble()),
-            ),
-            // Tooltip(
-            //   message: 'Objectivity',
-            //   child: _objectivityMeter(widget.news.objectivity.toDouble() / 100),
-            // ),
-          ],
+            child: Slider(
+              min: 0,
+              max: 100,
+              value: value,
+              onChanged: (value) => {},
+            )
         ),
       ),
     );
@@ -132,6 +87,18 @@ class _NewsCardState extends State<NewsCard> {
         sourceLink,
         height: 20,
         fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  Widget _objectivityMeter() {
+    return Tooltip( // Objectivity Ranking
+      message: "Objectivity",
+      child: Row(
+        children: [
+          for (int i = 0; i < _objectivity; i++) Icon(Icons.star, color: Colors.amber, ),
+          for (int i = 0; i < 5 - _objectivity; i++) Icon(Icons.star_border),
+        ],
       ),
     );
   }
@@ -216,31 +183,6 @@ class _NewsCardState extends State<NewsCard> {
     );
   }
 
-  Color colfunc(double val, double minval, maxval, Color startcolor, Color stopcolor) {
-    double f = (val - minval) / (maxval - minval);
-
-    List<List<double>> colors = [];
-    colors.add([startcolor.red.toDouble(), stopcolor.red.toDouble()]);
-    colors.add([startcolor.green.toDouble(), stopcolor.green.toDouble()]);
-    colors.add([startcolor.blue.toDouble(), stopcolor.blue.toDouble()]);
-
-    List<double> color = [];
-    for (int i = 0; i < colors.length; i++) {
-      double a = colors[i][0];
-      double b = colors[i][1];
-
-      double val = f * (b - a) + a;
-      color.add(val);
-    }
-    return Color.fromRGBO(color[0].round(), color[1].round(), color[2].round(), 1);
-  }
-
-  LinearGradient gradient = LinearGradient(
-      colors: <Color> [
-        Colors.blue,
-        Colors.red,
-      ]
-  );
 
   Widget _layout() {
     return ExpandableNotifier(
@@ -260,37 +202,14 @@ class _NewsCardState extends State<NewsCard> {
             // ),
 
             _thumbnail(widget.news.imageLink),
-            AbsorbPointer(
-              child: SliderTheme(
-                  data: SliderThemeData(
-                    thumbColor: colfunc(widget.news.polarity.toDouble(), 0, 100, Colors.blue, Colors.red),
-                    // disabledThumbColor: ,
-                    trackShape: GradientRectSliderTrackShape(gradient: gradient, darkenInactive: false),
-                  ),
-                  child: Slider(
-                    min: 0,
-                    max: 100,
-                    value: widget.news.polarity.toDouble(),
-                    onChanged: (value) => {},
-                  )
-              ),
-            ),
-
+            _polarityMeter(widget.news.polarity.toDouble()),
             IntrinsicHeight(
               child: Row(
                 children: [
                   _source(_tempSourceLink),
                   // Padding(padding: EdgeInsets.all(12),),
                   VerticalDivider(width: 36, thickness: 2, indent: 6, endIndent: 2, ),
-                  Tooltip( // Objectivity Ranking
-                    message: "Objectivity",
-                    child: Row(
-                      children: [
-                        for (int i = 0; i < _objectivity; i++) Icon(Icons.star, color: Colors.amber, ),
-                        for (int i = 0; i < 5 - _objectivity; i++) Icon(Icons.star_border),
-                      ],
-                    ),
-                  ),
+                  _objectivityMeter(),
                 ],
               ),
             ),

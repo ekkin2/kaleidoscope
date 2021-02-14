@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+LinearGradient gradient = LinearGradient(
+    colors: <Color> [
+      Colors.blue,
+      Colors.red,
+    ]
+);
+
 class GradientRectSliderTrackShape extends SliderTrackShape with BaseSliderTrackShape {
   /// Based on https://www.youtube.com/watch?v=Wl4F5V6BoJw
   /// Create a slider track that draws two rectangles with rounded outer edges.
