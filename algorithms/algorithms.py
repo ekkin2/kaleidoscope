@@ -65,7 +65,9 @@ def preprocess_text(text):
 def get_polarity(text, model_filepath): 
     '''
     This function takes in the raw text of an article, preprocesses it, and computes
-    a polarity score as a double from the deep learning model. 
+    a polarity score as a double from the deep learning model.
+    
+    The model should be located in /algorithms/models/
     '''
     
     embedding = preprocess_text(text)[0]
@@ -76,13 +78,15 @@ def get_polarity(text, model_filepath):
     def compute_polarity(pred): 
         '''
         This function computes a weighted sum of labels to get a quantitative
-        polarity score.
+        polarity score as an integer. 
         '''
         left = pred[0]
         center = pred[1]
         right = pred[2]
         
         polarity = left*0 + center*(0.5) + right*(1)
+        polarity = int(polarity * 100)
+        
         return polarity
     
     vf = np.vectorize(compute_polarity)
