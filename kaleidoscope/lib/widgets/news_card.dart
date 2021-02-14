@@ -133,7 +133,10 @@ class _NewsCardState extends State<NewsCard> {
     return Container(
         margin: EdgeInsets.only(right: 8),
         child: ExpandableButton(
-          child: Icon(Icons.list),
+          child: Icon(
+              Icons.list,
+            size: 28,
+          ),
         ),
       );
   }
