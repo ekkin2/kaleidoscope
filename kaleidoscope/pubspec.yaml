@@ -33,6 +33,7 @@ dependencies:
   webview_flutter: ^1.0.7
   expandable: ^4.1.4
   http: ^0.12.2
+  shared_preferences: ^0.5.12+4
 
 dev_dependencies:
   flutter_test:

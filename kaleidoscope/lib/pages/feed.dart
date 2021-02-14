@@ -19,7 +19,7 @@ class _FeedPageState extends State<FeedPage> {
 
   Future<List<News>> futureFeed;
   String _sortDropdownValue = "Recent";
-  String _topicDropdownValue = "All";
+  String _topicDropdownValue = "General";
 
   @override
   void initState() {
@@ -27,7 +27,7 @@ class _FeedPageState extends State<FeedPage> {
     futureFeed = fetchNews(_sortDropdownValue, _topicDropdownValue);
   }
 
-  Widget _dropdown(List<String> items, List onTaps) {
+  Widget _dropdown(List<String> items, void Function(String) onChanged, String value) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 12),
       width: 136,
@@ -41,8 +41,8 @@ class _FeedPageState extends State<FeedPage> {
           child: Container(
             margin: EdgeInsets.only(left: 16),
             child: DropdownButton(
-              value: _sortDropdownValue,
-              items: ['Recent', 'Objective'].map<DropdownMenuItem<String>>((String value) {
+              value: value,
+              items: items.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value,
@@ -52,7 +52,7 @@ class _FeedPageState extends State<FeedPage> {
                   ),
                 );
               }).toList(),
-              onChanged: (_) {},
+              onChanged: onChanged
             ),
           ),
         ),
@@ -66,8 +66,26 @@ class _FeedPageState extends State<FeedPage> {
       height: 24,
       child: Row(
         children: [
-          Expanded(child: _dropdown([], [])),
-          Expanded(child: _dropdown([], [])),
+          Expanded(
+              child: _dropdown(
+                  ["Recent", "Objective"],
+                  (String newValue) {
+                    setState(() {
+                      _sortDropdownValue = newValue;
+                    });
+                    _onRefresh();
+                  },
+                  _sortDropdownValue)),
+          Expanded(
+              child: _dropdown(
+                  ["Business", "Entertainment", "General", "Health", "Science", "Sports", "Technology"],
+                  (String newValue) {
+                    setState(() {
+                      _topicDropdownValue = newValue;
+                    });
+                    _onRefresh();
+                  },
+                  _topicDropdownValue)),
         ],
       ),
     );

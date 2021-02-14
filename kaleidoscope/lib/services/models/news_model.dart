@@ -31,7 +31,7 @@ class News {
     if (data == null) return null;
 
     final title = data["title"] as String;
-    final source = data["description"] as String;
+    final source = data["source"] as String;
     final link = data["link"] as String;
     final imageLink = data["imageLink"] as String;
     final polarity = data["polarity"] as int;
