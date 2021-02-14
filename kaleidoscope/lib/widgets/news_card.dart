@@ -6,12 +6,14 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import 'package:kaleidoscope/pages/article.dart';
 import 'package:kaleidoscope/services/models/news_model.dart';
+import 'package:kaleidoscope/util/gradient.dart';
+import 'package:kaleidoscope/util/colors.dart';
 
 class NewsCard extends StatefulWidget {
-  // NewsCard({Key key, this.news}) : super(key: key);
-  // final News news;
+  NewsCard({Key key, this.news}) : super(key: key);
+  final News news;
 
-  NewsCard({Key key}) : super(key: key);
+  // NewsCard({Key key}) : super(key: key);
   // todo: add news param back
 
   @override
@@ -20,110 +22,92 @@ class NewsCard extends StatefulWidget {
 
 class _NewsCardState extends State<NewsCard> {
 
-  String _bullet = "\u2023 ";
+  String _bullet = "\u2022";
   String _tempImgLink = "https://media.discordapp.net/attachments/809916337551966259/810003668057194496/12oszyW4ja3z9-VLfTjBwFA.png?width=705&height=397";
   String _tempSourceLink = "https://cdn.discordapp.com/attachments/809916337551966259/810005502502371348/CNN-Logo.png";
   List<String> _tempFactsList = ["fact 1 sdfskdfjlskdfjlskdfjlskdfjlskdfjlskdjfls lsdlskdflskd fkd fdk fkdf dk fkd fkd fkdfs kdf s", "fact 2", "fact 3"];
 
+  int _objectivity;
+
+  @override
+  void initState() {
+    _objectivity = (widget.news.objectivity / 20).ceil();
+  }
+
   Widget _thumbnail(String imageLink) {
-    return Expanded(
-      flex: 3,
-      child: Container(
-        margin: EdgeInsets.all(8),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: Image.network(
-            _tempImgLink,
-            fit: BoxFit.cover,
-          ),
-        ), 
-      ),
-    );
-  }
-
-  Widget _polarityMeter() {
     return Container(
-      height: 70,
-      child: SfRadialGauge(
-        axes: <RadialAxis>[RadialAxis(
-            showLabels: false,
-          showTicks: false,
-          pointers: [NeedlePointer(value: 90, needleStartWidth: 1, needleEndWidth: 3)],
-          axisLineStyle: AxisLineStyle(
-            gradient: SweepGradient(
-                colors: [Colors.blue, Colors.red],
-              stops: [0.25, 0.75],
+      margin: EdgeInsets.only(left: 8, right: 8, top: 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height / 4.5,
+              child: Container(
+                margin: EdgeInsets.all(8),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Image.network(
+                    imageLink,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             ),
           ),
-        )
         ],
       ),
     );
   }
 
-  Widget _objectivityMeter(percent) {
-    return Container(
-      height: 70,
-      child: SfRadialGauge(
-        axes: <RadialAxis>[RadialAxis(
-          showLabels: false,
-          showTicks: false,
-          // pointers: [NeedlePointer(value: 90, needleStartWidth: 1, needleEndWidth: 3)],
-          annotations: <GaugeAnnotation>[
-            GaugeAnnotation(axisValue: 50, positionFactor: 0.2,
-                widget: Text((percent*100).round().toString(), style:
-                TextStyle(fontWeight: FontWeight.w300, fontSize: 20),))],
-          ranges: <GaugeRange>[GaugeRange(startValue: 0, endValue: percent*100, color: Colors.green,
-          )],
-          // axisLineStyle: AxisLineStyle(
-          //   gradient: SweepGradient(
-          //     colors: [Colors.blue, Colors.red],
-          //     stops: [0.25, 0.75],
-          //   ),
-          // ),
-        )
-        ],
-      ),
-    );
-  }
-
-  Widget _metricColumn(percent) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        margin: EdgeInsets.all(8),
-        child: Column(
-          children: [
-            Tooltip(
-              message: 'Polarity',
-              child: _polarityMeter(),
+  Widget _polarityMeter(double value) {
+    return Tooltip(
+      message: "Polarity",
+      child: AbsorbPointer(
+        child: SliderTheme(
+            data: SliderThemeData(
+              thumbColor: colfunc(value, 0, 100, Colors.blue, Colors.red),
+              // disabledThumbColor: ,
+              trackShape: GradientRectSliderTrackShape(gradient: gradient, darkenInactive: false),
             ),
-            Tooltip(
-              message: 'Objectivity',
-              child: _objectivityMeter(.65),
-            ),
-          ],
+            child: Slider(
+              min: 0,
+              max: 100,
+              value: value,
+              onChanged: (value) => {},
+            )
         ),
       ),
     );
   }
 
-  Widget _source() {
+  Widget _source(sourceLink) {
     return Container(
       margin: EdgeInsets.only(left: 12, bottom: 4, top: 8),
       child: Image.network(
-        _tempSourceLink,
-        height: 16,
+        sourceLink,
+        height: 20,
         fit: BoxFit.cover,
       ),
     );
   }
 
-  Widget _title() {
+  Widget _objectivityMeter() {
+    return Tooltip( // Objectivity Ranking
+      message: "Objectivity",
+      child: Row(
+        children: [
+          for (int i = 0; i < _objectivity; i++) Icon(Icons.star, color: Colors.amber, ),
+          for (int i = 0; i < 5 - _objectivity; i++) Icon(Icons.star_border),
+        ],
+      ),
+    );
+  }
+
+  Widget _title(String title) {
     return Container(
         margin: EdgeInsets.only(left: 12, top: 8, right: 8),
         child: Text(
-            "Microsoft's Big Win in Quantum Computing Was an 'Error' After All",
+            title,
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -132,11 +116,11 @@ class _NewsCardState extends State<NewsCard> {
       );
   }
 
-  Widget _timestamp() {
+  Widget _timestamp(String time) {
     return Container(
         margin: EdgeInsets.only(top: 8, bottom: 8, left: 12),
         child: Text(
-          'Yesterday',
+          time,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w300,
@@ -149,7 +133,10 @@ class _NewsCardState extends State<NewsCard> {
     return Container(
         margin: EdgeInsets.only(right: 8),
         child: ExpandableButton(
-          child: Icon(Icons.list),
+          child: Icon(
+              Icons.list,
+            size: 28,
+          ),
         ),
       );
   }
@@ -163,8 +150,8 @@ class _NewsCardState extends State<NewsCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _title(),
-              _timestamp(),
+              _title(widget.news.title),
+              _timestamp(widget.news.timestamp),
             ],
           ),
         ),
@@ -173,23 +160,32 @@ class _NewsCardState extends State<NewsCard> {
     );
   }
 
-  Widget _factsList() {
+  Widget _factsList(List factsList) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          for (var i in _tempFactsList) Text(
-            _bullet + i,
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 16
-            ),
-          )
+          for (var i in factsList) Row(
+            children: [
+              Text(
+                  _bullet + ' ',
+                style: TextStyle(fontSize: 12, fontFamily: 'Roboto'),
+              ),
+              Text(
+                i,
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 16
+                ),
+              )
+            ],
+          ),
         ],
       ),
     );
   }
+
 
   Widget _layout() {
     return ExpandableNotifier(
@@ -201,14 +197,25 @@ class _NewsCardState extends State<NewsCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                _thumbnail(_tempImgLink),
-                _metricColumn(0.5),
-              ],
+            // Row(
+            //   children: [
+            //
+            //     _metricColumn(0.5),
+            //   ],
+            // ),
+
+            _thumbnail(widget.news.imageLink),
+            _polarityMeter(widget.news.polarity.toDouble()),
+            IntrinsicHeight(
+              child: Row(
+                children: [
+                  _source(_tempSourceLink),
+                  // Padding(padding: EdgeInsets.all(12),),
+                  VerticalDivider(width: 36, thickness: 2, indent: 6, endIndent: 2, ),
+                  _objectivityMeter(),
+                ],
+              ),
             ),
-            // todo: add source img here
-            _source(),
 
             Expandable(
               collapsed: _bottomRow(),
@@ -216,7 +223,7 @@ class _NewsCardState extends State<NewsCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _bottomRow(),
-                  _factsList(),
+                  _factsList(widget.news.facts),
                 ],
               ),
             ),
@@ -244,7 +251,7 @@ class _NewsCardState extends State<NewsCard> {
     // todo: change url to widget.news.url
     // todo: whenever tapped, add polarity of news source to global moving avg.
     // todo: global avg. can be a global var
-    Navigator.of(context).push(new ArticlePageRoute(_tempUrl));
+    Navigator.of(context).push(new ArticlePageRoute(widget.news.link));
   }
 }
 

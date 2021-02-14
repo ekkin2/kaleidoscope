@@ -53,15 +53,28 @@ class MyAppState extends State<MyApp> {
       title: 'Kaleidoscope',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-
+        fontFamily: 'Jost',
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          leading: Hero(
+            tag: 'logo',
+            child: Container(
+              margin: EdgeInsets.all(8),
+              child: SizedBox(
+                child: Image(image: AssetImage('assets/images/kaleidoscope_logo.png')),
+              ),
+            ),
+          ),
           iconTheme: IconThemeData(
             color: Colors.white,
           ),
-          title: Text("Kaleidoscope"),
+          title: Text("Kaleidoscope",
+            style: TextStyle(color: Colors.black87)
+          ),
         ),
         body: _children[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
