@@ -1,4 +1,4 @@
-# kaleidoscope
+# Kleidoscope
 Kaleidoscope is an accessibility focused news feed app that shows users the facts quickly and efficiently while making sure users are cognizant of the political biases in the articles they read.
 
 ## Inspiration
