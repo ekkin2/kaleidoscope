@@ -69,6 +69,11 @@ def refresh_db():
             article['objectivity'] = objectivity
             article['polarity'] = polarity
 
+            article['imageLink'] = article.pop('urlToImage')
+            article['link'] = article.pop('url')
+            article['timestamp'] = article.pop('publishedAt')
+            article['source'] = article.pop('source')['name']
+
     with open('static/db.json', 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
@@ -77,4 +82,5 @@ def refresh_db():
 
 
 if __name__ == '__main__':
+    # app.run(host='0.0.0.0')
     app.run()
