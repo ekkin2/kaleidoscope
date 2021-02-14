@@ -6,6 +6,7 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import 'package:kaleidoscope/pages/article.dart';
 import 'package:kaleidoscope/services/models/news_model.dart';
+import 'package:kaleidoscope/util/gradient.dart';
 
 class NewsCard extends StatefulWidget {
   NewsCard({Key key, this.news}) : super(key: key);
@@ -33,20 +34,26 @@ class _NewsCardState extends State<NewsCard> {
   }
 
   Widget _thumbnail(String imageLink) {
-    return Expanded(
-      flex: 3,
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height / 4.5,
-        child: Container(
-          margin: EdgeInsets.all(8),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Image.network(
-              imageLink,
-              fit: BoxFit.cover,
+    return Container(
+      margin: EdgeInsets.only(left: 8, right: 8, top: 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height / 4.5,
+              child: Container(
+                margin: EdgeInsets.all(8),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Image.network(
+                    imageLink,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -209,6 +216,32 @@ class _NewsCardState extends State<NewsCard> {
     );
   }
 
+  Color colfunc(double val, double minval, maxval, Color startcolor, Color stopcolor) {
+    double f = (val - minval) / (maxval - minval);
+
+    List<List<double>> colors = [];
+    colors.add([startcolor.red.toDouble(), stopcolor.red.toDouble()]);
+    colors.add([startcolor.green.toDouble(), stopcolor.green.toDouble()]);
+    colors.add([startcolor.blue.toDouble(), stopcolor.blue.toDouble()]);
+
+    List<double> color = [];
+    for (int i = 0; i < colors.length; i++) {
+      double a = colors[i][0];
+      double b = colors[i][1];
+
+      double val = f * (b - a) + a;
+      color.add(val);
+    }
+    return Color.fromRGBO(color[0].round(), color[1].round(), color[2].round(), 1);
+  }
+
+  LinearGradient gradient = LinearGradient(
+      colors: <Color> [
+        Colors.blue,
+        Colors.red,
+      ]
+  );
+
   Widget _layout() {
     return ExpandableNotifier(
       child: Card(
@@ -219,11 +252,28 @@ class _NewsCardState extends State<NewsCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                _thumbnail(widget.news.imageLink),
-                _metricColumn(0.5),
-              ],
+            // Row(
+            //   children: [
+            //
+            //     _metricColumn(0.5),
+            //   ],
+            // ),
+
+            _thumbnail(widget.news.imageLink),
+            AbsorbPointer(
+              child: SliderTheme(
+                  data: SliderThemeData(
+                    thumbColor: colfunc(widget.news.polarity.toDouble(), 0, 100, Colors.blue, Colors.red),
+                    // disabledThumbColor: ,
+                    trackShape: GradientRectSliderTrackShape(gradient: gradient, darkenInactive: false),
+                  ),
+                  child: Slider(
+                    min: 0,
+                    max: 100,
+                    value: widget.news.polarity.toDouble(),
+                    onChanged: (value) => {},
+                  )
+              ),
             ),
 
             IntrinsicHeight(
