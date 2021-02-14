@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kaleidoscope/services/network.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import 'package:kaleidoscope/services/models/news_model.dart';
@@ -16,21 +17,22 @@ class RecommendPage extends StatefulWidget {
 
 class _RecommendPageState extends State<RecommendPage> {
   Future<List<News>> futureFeed;
+  int avg = 50;
 
   @override
   void initState() {
     super.initState();
-    futureFeed = fetchPersonalNews();
+    _onRefresh();
   }
 
-  Widget _polarityMeter() {
+  Widget _polarityMeter(double value) {
     return Container(
       height: 70,
       child: SfRadialGauge(
         axes: <RadialAxis>[RadialAxis(
           showLabels: false,
           showTicks: false,
-          pointers: [NeedlePointer(value: 30, needleStartWidth: 1, needleEndWidth: 3)],
+          pointers: [NeedlePointer(value: value, needleStartWidth: 1, needleEndWidth: 3)],
           axisLineStyle: AxisLineStyle(
             gradient: SweepGradient(
               colors: [Colors.blue, Colors.red],
@@ -52,7 +54,7 @@ class _RecommendPageState extends State<RecommendPage> {
           Expanded(child:
             Container(
               margin: EdgeInsets.all(12),
-              child: _polarityMeter(),
+              child: _polarityMeter(avg.toDouble()),
             ),
           ),
 
@@ -60,7 +62,7 @@ class _RecommendPageState extends State<RecommendPage> {
             flex: 2,
             child: Container(
               margin: EdgeInsets.only(left: 16),
-              child: Text("You've been reading more liberal articles recently.",
+              child: Text("You've been reading more " + (avg > 55 ? "conservative": avg > 45 ? "neutral" : "liberal") + " articles recently.",
                 style: TextStyle(
                   fontSize: 16,
                 ),
@@ -74,8 +76,10 @@ class _RecommendPageState extends State<RecommendPage> {
   }
 
   Future _onRefresh() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
     setState(() {
       futureFeed = fetchPersonalNews();
+      avg = _prefs.getInt('polavg') ?? 50;
     });
   }
 

@@ -2,6 +2,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import 'package:kaleidoscope/pages/article.dart';
@@ -166,7 +167,7 @@ class _NewsCardState extends State<NewsCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          for (var i in factsList) Row(
+          for (var i in (factsList ?? [])) Row(
             children: [
               Text(
                   _bullet + ' ',
@@ -247,10 +248,14 @@ class _NewsCardState extends State<NewsCard> {
 
   String _tempUrl = "https://www.npr.org/sections/trump-impeachment-trial-live-updates/2021/02/12/967425820/trump-defense-tries-to-switch-blame-saying-democrats-didnt-condemn-looting";
   // on taps
-  _onTap(context){
-    // todo: change url to widget.news.url
+  _onTap(context) async {
     // todo: whenever tapped, add polarity of news source to global moving avg.
     // todo: global avg. can be a global var
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    int prevavg = _prefs.getInt('polavg') ?? 50;
+    int avg = (prevavg + 1/4 * (widget.news.polarity - prevavg)).toInt();
+    _prefs.setInt('polavg', avg);
+
     Navigator.of(context).push(new ArticlePageRoute(widget.news.link));
   }
 }
