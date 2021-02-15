@@ -110,14 +110,17 @@ def number_of_specific_entities(sent):
     return entity_dict
 
 def get_objectivity_score(text):
-    nn_classifier_scaled = load_pickle('models/nn_classifier_scaled.pickle')
-    scaler = load_pickle('models/scaler.pickle')
+    nn_classifier_scaled = load_pickle('../algorithms/models/nn_classifier_scaled.pickle')
+    scaler = load_pickle('../algorithms/models/scaler.pickle')
     return compute_objectivity(text, nn_classifier_scaled, scaler)
 
 def compute_objectivity(text, classifier, scaler=None):
 
     # Divide text into individual sentences
     # print(nlp(text))
+    if text is None: 
+        return 0
+        
     parsed_test = divide_into_sentences(nlp(text))
     num_facts = 0
 

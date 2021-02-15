@@ -210,9 +210,16 @@ class _NewsCardState extends State<NewsCard> {
             IntrinsicHeight(
               child: Row(
                 children: [
-                  _source(_tempSourceLink),
-                  // Padding(padding: EdgeInsets.all(12),),
+                  // _source(_tempSourceLink),
+                  Padding(padding: EdgeInsets.all(8),),
+                  Text(widget.news.source,
+                    style: TextStyle(
+                      fontSize: 18,
+                    )
+                  ),
+
                   VerticalDivider(width: 36, thickness: 2, indent: 6, endIndent: 2, ),
+                  // VerticalDivider(width: 36, thickness: 2, indent: 6, endIndent: 2, ),
                   _objectivityMeter(),
                 ],
               ),

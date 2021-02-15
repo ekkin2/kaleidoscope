@@ -3,6 +3,10 @@ from werkzeug.serving import WSGIRequestHandler
 import json
 import os
 from newsapi import NewsApiClient
+import numpy as np
+
+from objectivity_score import get_objectivity_score
+from algorithms import get_polarity, init_alg, summarize_text
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -54,6 +58,7 @@ def get_recent():
 def refresh_db():
     newsapi = NewsApiClient(api_key='fc821330ca0645379a9a1477fe76fa6a')
     data = {}
+    # init_alg()
 
     for category in categories:
         data[category] = newsapi.get_top_headlines(language='en',
@@ -63,9 +68,26 @@ def refresh_db():
 
         for article in data[category]["articles"]:
             # TODO Objectivity
-            objectivity = 100
-            # TODO Bias
-            polarity = 0
+            content = article["content"]
+            mu, sigma = 0.5, 0.2 # mean and standard deviation
+            pol_np = np.random.normal(mu, sigma, 1)
+            polarity = min(max(int((pol_np[0] * 100)), 0), 100)
+            
+            # content = article["content"]
+            mu, sigma = 0.5, 0.2 # mean and standard deviation
+            obj_np = np.random.normal(mu, sigma, 1)
+            objectivity = min(max(int((obj_np[0] * 100)), 0), 100)
+            objectivity = int(get_objectivity_score(content))
+            # # # TODO Bias
+            # model_filepath = '../algorithms/models/polarity_model'
+            # polarity = get_polarity(content, model_filepath)
+
+            # fallback
+            # mu, sigma = 0.5, 0.1 # mean and standard deviation
+            # s = np.random.normal(mu, sigma, 1)
+            # polarity = int((s[0] * 100))
+            # print(polarity)
+            # polarity = 32
 
             article['objectivity'] = objectivity
             article['polarity'] = polarity
@@ -74,6 +96,10 @@ def refresh_db():
             article['link'] = article.pop('url')
             article['timestamp'] = article.pop('publishedAt')
             article['source'] = article.pop('source')['name']
+
+            # summarize 
+            
+            article['facts'] = ['Rep. Matt Gaetz is blaning the news media.', 'The aide was concerned.']
 
     with open('static/db.json', 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
