@@ -1,4 +1,6 @@
-# Kaleidoscope is an accessibility focused news feed app that shows users the facts quickly and efficiently while making sure users are cognizant of the political biases in the articles they read.
+# Kaleidoscope 
+
+#### Kaleidoscope is an accessibility focused news feed app that shows users the facts quickly and efficiently while making sure users are cognizant of the political biases in the articles they read.
 
 ## Inspiration
 2020 showed us how important reliable access to trustworthy information is in our modern society. From misinformation about COVID-19, masks, and vaccines causing great danger to public health and misinformation about election results culminating in rioters storming the Capitol, the damage caused by partisan politics and lack of access to trustworthy news is extremely apparent. 
